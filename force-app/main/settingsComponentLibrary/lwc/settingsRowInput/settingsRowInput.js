@@ -53,6 +53,7 @@ export default class SettingsRowInput extends LightningElement {
         console.log('check validity: ' + defaultAccountModelComboElement.checkValidity());
 
         //Salesforce is trolling me...Manually checking since it seems the required = true doesnt work on comboboxes....so far...
+        //The required property is true and the text and value are undefined, but still checkValidity returns true....so weird...
         if (defaultAccountModelComboElement.Text === undefined) {
             console.log("inside the manuall null check");
             defaultAccountModelComboElement.setCustomValidity("Please fill out this field");

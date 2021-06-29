@@ -336,11 +336,24 @@ export default class AccountModelSettings extends LightningElement {
     handleSettingsSaving(event) {
         this.affordancesDisabledToggle = true;
         // TODO: perform client side validation
+        //POC 
+        //this.template.querySelector("[data-id='Controlling Picklist Type']");
+        
+        let validationParams = {
+            requiredFields :[
+                {field : this.inputAttributeReference.defaultAccountModelComboboxId}
+            ]
+        };
 
-        // if validation fails, call this.handleValidationFailure()
+        let passedValidation = this.template.querySelector("c-settings-row-input").handleValidation(validationParams);
+
+        if (passedValidation) {
+            this.template.querySelector("c-settings-save-canvas").updateHierarchySettings();
+        } else {
+                    // if validation fails, call this.handleValidationFailure()
         //this.template.querySelector("c-settings-save-canvas").handleValidationFailure();
 
-        this.template.querySelector("c-settings-save-canvas").updateHierarchySettings();
+        }
     }
 
     handleSettingsSaveCompleted(event) {

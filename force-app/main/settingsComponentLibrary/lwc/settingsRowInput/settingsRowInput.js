@@ -10,6 +10,7 @@ export default class SettingsRowInput extends LightningElement {
     @api placeholder;
     @api options;
     @api disabled;
+    @api required;
     @api type;
     @api variant = "label-hidden";
 
@@ -35,6 +36,37 @@ export default class SettingsRowInput extends LightningElement {
 
         const settingsInputChange = new CustomEvent("settingsinputchange", { detail: eventDetail });
         this.dispatchEvent(settingsInputChange);
+    }
+
+    @api
+    handleValidation(params) {
+
+        console.log('inside handleValidation');
+
+        let defaultAccountModelCombobox = params.requiredFields[0].field;
+        
+        let defaultAccountModelComboElement = this.template.querySelector("[data-qa-locator='" + defaultAccountModelCombobox + "']");
+        console.log('logging element: ' + defaultAccountModelComboElement.name );
+        console.log('required?: ' + defaultAccountModelComboElement.required );
+        console.log('element value: ' + defaultAccountModelComboElement.value );
+        console.log('selected text: ' + defaultAccountModelComboElement.Text);
+        console.log('check validity: ' + defaultAccountModelComboElement.checkValidity());
+
+        //Salesforce is trolling me...Manually checking since it seems the required = true doesnt work on comboboxes....so far...
+        if (defaultAccountModelComboElement.Text === undefined) {
+            console.log("inside the manuall null check");
+            defaultAccountModelComboElement.setCustomValidity("Please fill out this field");
+            defaultAccountModelComboElement.reportValidity();
+            return false;
+        }
+
+        return true;
+
+        /* somehow this doesnt work
+            this.template.querySelectorAll('lightning-combobox').forEach(element => {
+            element.reportValidity();
+        });*/
+        
     }
 
     @api

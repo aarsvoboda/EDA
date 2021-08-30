@@ -10,7 +10,6 @@ export default class SettingsRowInput extends LightningElement {
     @api placeholder;
     @api options;
     @api disabled;
-    @api required;
     @api type;
     @api variant = "label-hidden";
 
@@ -38,6 +37,7 @@ export default class SettingsRowInput extends LightningElement {
         this.dispatchEvent(settingsInputChange);
     }
 
+    /*
     @api
     handleValidation(params) {
 
@@ -52,23 +52,22 @@ export default class SettingsRowInput extends LightningElement {
         console.log('selected text: ' + defaultAccountModelComboElement.Text);
         console.log('check validity: ' + defaultAccountModelComboElement.checkValidity());
 
-        //Salesforce is trolling me...Manually checking since it seems the required = true doesnt work on comboboxes....so far...
-        //The required property is true and the text and value are undefined, but still checkValidity returns true....so weird...
-        if (defaultAccountModelComboElement.Text === undefined) {
+        //Manually checking the input value since the viewModelMapper returns \"\" if the value is empty.
+        //The required property is true, the text is undefined and value is \"\", this means checkValidity will always return true.
+        if (defaultAccountModelComboElement.value === "\"\"") {
             console.log("inside the manuall null check");
             defaultAccountModelComboElement.setCustomValidity("Please fill out this field");
             defaultAccountModelComboElement.reportValidity();
             return false;
+        } else {
+            alert(defaultAccountModelComboElement.value);
+            console.log("all valid");
+            defaultAccountModelComboElement.setCustomValidity("");
+            defaultAccountModelComboElement.reportValidity();
         }
-
         return true;
-
-        /* somehow this doesnt work
-            this.template.querySelectorAll('lightning-combobox').forEach(element => {
-            element.reportValidity();
-        });*/
-        
     }
+    */
 
     @api
     resetValue() {

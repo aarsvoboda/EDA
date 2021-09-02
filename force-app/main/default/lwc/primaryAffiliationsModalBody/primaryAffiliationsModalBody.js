@@ -18,6 +18,7 @@ export default class PrimaryAffiliationsModalBody extends LightningElement {
     @api accountRecordType;
     @api contactField;
     @api autoEnrollmentEnabled;
+    @api lastname = 'test';
 
     @track accountRecordTypeComboboxVModel;
     @track accountRecordTypeComboboxWireResult;
@@ -148,5 +149,16 @@ export default class PrimaryAffiliationsModalBody extends LightningElement {
             this.labelReference.modalBodyDeleteWithAutoEnrollment.replace("{0}", this.accountRecordType) + " ";
 
         return autoEnrollmentDeleteWarningText.concat(deleteWarningText);
+    }
+
+    @api
+    validate(errorParameters) {
+        console.log('Body Received:' + JSON.stringify(errorParameters));
+
+    }
+
+    @api
+    show(){
+        console.log('body show fired');
     }
 }

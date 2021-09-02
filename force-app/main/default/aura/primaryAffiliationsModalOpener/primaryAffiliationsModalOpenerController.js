@@ -7,5 +7,13 @@
     },
     handleModalFooterEvent: function (component, event, helper) {
         helper.handleModalFooterEvent(component,event);
+    },
+    closeModal: function (component, event, helper) {
+        console.log('primaryAffiliationsModal closemodal');
+        helper.handleCloseModal(component);
+    },
+    displayErrors: function (component, event, helper) {
+        console.log('primaryAffiliationsModal displayErrors');
+        helper.handleDisplayErrors(component, event.getParam('arguments'));
     }
 });

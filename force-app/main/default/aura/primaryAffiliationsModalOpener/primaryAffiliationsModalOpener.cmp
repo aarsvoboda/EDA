@@ -4,6 +4,11 @@
     <aura:attribute name="accountRecordType" type="String" />
     <aura:attribute name="contactField" type="String" />
     <aura:attribute name="autoProgramEnrollment" type="Boolean" />
+    <aura:attribute name="overlayPromise" type="Aura.Action" />
+    <aura:attribute name="primaryAffiliationModalFooterCmp" type="Aura.Component" />
+    <aura:attribute name="primaryAffiliationModalBodyCmp" type="Aura.Component" />
+    
+
 
 
     <aura:handler name="modalDataChangeEventHandler" event="c:modalDataChangeEvent" action="{!c.handleModalDataChangeEvent}" />
@@ -18,4 +23,12 @@
         <aura:attribute name="contactField" type="String" />
         <aura:attribute name="autoProgramEnrollment" type="Boolean" />
     </aura:method>
+
+    <aura:method name="closeModal" action="{!c.closeModal}">
+    </aura:method>
+
+    <aura:method name="displayErrors" action="{!c.displayErrors}">
+        <aura:attribute name="errorParameters" type="Object" />
+    </aura:method>
+
 </aura:component>

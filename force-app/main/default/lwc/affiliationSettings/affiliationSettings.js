@@ -25,6 +25,8 @@ import stgAffiliationsDeleteSuccess from "@salesforce/label/c.stgAffiliationsDel
 import stgBtnDelete from "@salesforce/label/c.stgBtnDelete";
 import stgBtnAddMapping from "@salesforce/label/c.stgBtnAddMapping";
 import stgSuccess from "@salesforce/label/c.stgSuccess";
+import stgError from "@salesforce/label/c.stgError";
+import stgErrorAffiliationsSave from "@salesforce/label/c.stgErrorAffiliationsSave";
 
 export default class affiliationSettings extends LightningElement {
     isEditMode = false;
@@ -49,11 +51,13 @@ export default class affiliationSettings extends LightningElement {
             primaryAffiliationsTitle: stgTabAfflMappings,
         },
         editSuccessMessage: stgAffiliationsEditSuccess,
+        saveErrorMessage: stgErrorAffiliationsSave,
         deleteSuccessMessage: stgAffiliationsDeleteSuccess,
         tellMeMoreLink: stgTellMeMoreLink,
         newButton: stgBtnAddMapping,
         successMessageForCreate: stgAffiliationsNewSuccess,
         successToast: stgSuccess,
+        errorToast: stgError
     };
 
     affiliationsHyperLink =
@@ -230,24 +234,85 @@ export default class affiliationSettings extends LightningElement {
         this.refreshAllApex();
     }
 
-    updateAffiliation(mappingName, accountRecordType, contactField) {
-        updateAffiliationMappings({
-            mappingName: mappingName,
-            accRecordType: accountRecordType,
-            conPrimaryAfflField: contactField,
-        })
-            .then((result) => {
-                this.showToast(
-                    "success",
-                    this.labelReference.successToast,
-                    this.labelReference.editSuccessMessage.replace("{0}", result)
-                );
-            })
+    handleValidation(mappingName, accountRecordType, contactField) {
+        let validationResult = {
+            success: false,
+            error: {
+                mappingName: mappingName,
+                elementId: "primaryAffiliationsAccountRecordType",
+                message: "There is an error with this field"
+            }
+        };
 
-            .catch((error) => {
-                // console.log('Inside error');
-            });
-        this.refreshAllApex();
+        return validationResult;
+    }
+    
+    updateAffiliation(mappingName, accountRecordType, contactField) {
+        console.log('updateAffiliation');
+        let validationResult = this.handleValidation(mappingName, accountRecordType, contactField);
+
+        if (validationResult.success === true) {
+            console.log('success');
+            updateAffiliationMappings({
+                mappingName: mappingName,
+                accRecordType: accountRecordType,
+                conPrimaryAfflField: contactField,
+            })
+                .then((result) => {
+                    this.showToast(
+                        "success",
+                        this.labelReference.successToast,
+                        this.labelReference.editSuccessMessage.replace("{0}", result)
+                    );
+                    this.closeModal();
+                })
+
+                .catch((error) => {
+                    // console.log('Inside error');
+                });
+            this.refreshAllApex();
+        }
+
+        if (validationResult.success === false) {
+            console.log('error');
+            this.showToast(
+                "error",
+                this.labelReference.errorToast,
+                this.labelReference.saveErrorMessage.replace("{0}", validationResult.error.mappingName)
+            );
+
+            const errorParams = {
+                modal: "primaryAffiliationsModal",
+                error: validationResult.error.elementId,
+                message: validationResult.error.message
+            };
+            this.displayErrors(errorParams);
+        }
+
+
+    }
+
+    displayErrors(errorParams) {
+        const displayErrorEvent = new CustomEvent("displayerrorsrequest", {
+            detail: errorParams,
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(displayErrorEvent);
+    }
+
+    closeModal() {
+        const closeEventDetail = {
+            modal: "primaryAffiliationsModal"
+        };
+        const closeModalEvent = new CustomEvent("closemodalrequest", {
+            detail: closeEventDetail,
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(closeModalEvent);
     }
 
     deleteAffiliation(mappingName) {

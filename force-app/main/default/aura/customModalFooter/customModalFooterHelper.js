@@ -7,7 +7,9 @@
 
         try {
             customModalFooterEvent.fire();
-            component.find("edaOverlayLibrary").notifyClose();
+            if (buttonClicked === "cancel"){
+                component.find("edaOverlayLibrary").notifyClose();
+            }
         } catch (e) {
             //save for validation handling
             //console.error(e);

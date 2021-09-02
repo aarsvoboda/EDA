@@ -3662,6 +3662,22 @@
         <value>Store Errors</value>
     </labels>
     <labels>
+        <fullName>stgError</fullName>
+        <categories>Settings</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error message displayed in multiple places</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>stgErrorAffiliationsSave</fullName>
+        <categories>Settings</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error message when an Affiliation mapping is saved</shortDescription>
+        <value>Affiliation mapping for {0} has some errors.</value>
+    </labels>
+    <labels>
         <fullName>stgSuccess</fullName>
         <categories>Settings</categories>
         <language>en_US</language>

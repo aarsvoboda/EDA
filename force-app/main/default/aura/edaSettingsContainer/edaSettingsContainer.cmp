@@ -13,5 +13,7 @@
         onautoenrollmentmodalrequest="{!c.handleAutoEnrollmentModalRequest}"
         onrelationshipmappingmodalrequest="{!c.handleRelationshipMappingModalRequest}"
         onsettingsbatchjobmodalrequest="{!c.settingsBatchJobModalRequestHandler}"
+        onclosemodalrequest="{!c.closeModalHandler}"
+        ondisplayerrorsrequest="{!c.displayErrorsHanlder}"
     />
 </aura:component>

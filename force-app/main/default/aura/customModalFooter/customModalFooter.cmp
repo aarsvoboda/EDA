@@ -20,4 +20,8 @@
         disabled="{!v.disableSaveButton}"
         variant="brand"
     />
+
+    <aura:method name="show" action="{!c.show}">
+    </aura:method>
+
 </aura:component>

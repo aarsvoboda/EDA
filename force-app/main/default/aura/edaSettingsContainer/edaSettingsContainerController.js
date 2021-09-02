@@ -25,5 +25,17 @@
     handleModalSaveEvent: function (component, event, helper) {
         event.stopPropagation();
         helper.handleModalSaveEvent(component, event.getParam("saveModel"));
+    },
+    closeModalHandler: function (component, event, helper) {
+        console.log('eda settings closeModalHandler');
+        event.stopPropagation();
+        const eventParameters = event.getParams();
+        helper.closeModal(component, eventParameters);
+    },
+    displayErrorsHanlder: function (component, event, helper) {
+        console.log('eda settings displayErrorsHanlder');
+        event.stopPropagation();
+        const errorParameters = event.getParams();
+        helper.handleDisplayErrors(component, errorParameters);
     }
 });

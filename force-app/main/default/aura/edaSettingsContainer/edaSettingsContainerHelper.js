@@ -64,5 +64,15 @@
         const edaSettings = component.find("edaSettings");
         const edaSettingsElement = edaSettings.getElement();
         edaSettingsElement.modalSave(saveModel);
+    },
+    closeModal: function (component, eventParameters) {
+        console.log('eda settings helper closemodal');
+        const modal = eventParameters.modal;
+        component.find(modal).closeModal();
+    },
+    handleDisplayErrors: function (component, errorParameters) {
+        console.log('eda settings helper handleDisplayErrors');
+        const modal = errorParameters.modal;
+        component.find(modal).displayErrors(errorParameters);
     }
 });

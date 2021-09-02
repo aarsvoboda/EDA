@@ -9,5 +9,8 @@
         const sourceName = event.getParam("sourceName");
         const disableSaveButton = event.getParam("disableSaveButton");
         helper.handleToggleSaveButtonVisibility(component, sourceName, disableSaveButton);
+    },
+    show: function (component, event, helper) {
+        console.log('footer show fired');
     }
 });

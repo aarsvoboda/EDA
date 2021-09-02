@@ -19,6 +19,8 @@
         let confirmButton;
         let cancelButton;
 
+        let primaryAffiliationModalCmp;
+
         switch (component.get("v.affiliationsAction")) {
             case "create":
                 modalHeaderLabel = $A.get("$Label.c.stgNewAfflMapping");
@@ -41,7 +43,7 @@
             [
                 [
                     "c:primaryAffiliationsModal",
-                    {
+                    {   "aura:id": "primaryAffiliationsModalId",
                         affiliationsAction: component.get("v.affiliationsAction"),
                         accountRecordType: component.get("v.accountRecordType"),
                         contactField: component.get("v.contactField"),
@@ -52,6 +54,7 @@
                 [
                     "c:customModalFooter",
                     {
+                        "aura:id": "customModalFooterId",
                         confirmButtonLabel: confirmButton,
                         confirmButtonTitle: confirmButton,
                         cancelButtonLabel: cancelButton,
@@ -64,13 +67,41 @@
                 if (status === "SUCCESS") {
                     modalBody = components[0];
                     modalFooter = components[1];
+                    
                     //Create the modal
-                    component.find("edaOverlayLibrary").showCustomModal({
+                    var overlayPromise = component.find("edaOverlayLibrary").showCustomModal({
                         header: modalHeaderLabel,
                         body: modalBody,
                         footer: modalFooter,
                         showCloseButton: false
                     });
+                    component.set("v.overlayPromise", overlayPromise);
+
+                    if(components) {
+                        console.log('body: '+JSON.stringify(components[0]));
+                        console.log('footer: '+JSON.stringify(components[1]));
+
+                        //The footer is aura and works
+                        components[1].show();
+
+                        //The body is lwc and doesnt work
+                        //components[0].show();
+
+                        //Trying to store(footer) the aura component in a variable
+                        component.set("v.primaryAffiliationModalFooterCmp", components[1]);
+
+                        //Trying to store(body)the lwc component in a variable
+                        component.set("v.primaryAffiliationModalBodyCmp", components[0]);
+
+                        console.log('all fine');
+
+                    }
+
+                    /*
+                    component.set("v.primaryAffiliationModalBodyCmp", modalBody);
+                    console.log('body: '+JSON.stringify(modalBody));
+                    console.log('modalFooter: '+JSON.stringify(modalFooter));
+                    */
                 }
             }
         );
@@ -175,5 +206,47 @@
             saveModel: saveModel
         });
         modalSaveEvent.fire();
+    },
+    handleCloseModal: function (component) {
+        console.log('primary affiliation helper close modal');
+        component.get("v.overlayPromise").then(function(overlay){
+            overlay.close();
+        });
+    },
+
+    handleDisplayErrors: function (component, errorParameters) {
+        console.log('primary affiliation helper handleDisplayErrors');
+        console.log(JSON.stringify(errorParameters));
+
+        
+        //Test 1 - Using a stored aura component
+        //It doesnt work
+        let primaryAffiliationModalFooterCmp = component.get("v.primaryAffiliationModalFooterCmp");
+        primaryAffiliationModalFooterCmp.show();
+        
+
+        /* 
+        //Test 2 - Using the aura component id - 
+        //works the first time and when the next popup opens, it throws an error
+        let customModalFooter = component.find("customModalFooterId");
+        customModalFooter.show();
+        */
+
+        /*
+        // Test 3 - Using a stored lwc component
+        // It doesn't work
+        let primaryAffiliationModalBodyCmp = component.get("v.primaryAffiliationModalBodyCmp");
+        primaryAffiliationModalBodyCmp.show();
+        */
+        
+        /*
+        // Test 4 - Using the lwc component id
+        // It doesn't work, multiples examples show this is possible, but this example inserts the modalBody into the overlay framework not in the opener.
+        let primaryAffiliationModalBody = component.find("primaryAffiliationsModalId");
+        primaryAffiliationModalBody.show();
+        */
+
+        
+
     }
 });

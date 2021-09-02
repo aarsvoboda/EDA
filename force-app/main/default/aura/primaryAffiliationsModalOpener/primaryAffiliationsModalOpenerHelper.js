@@ -214,9 +214,9 @@
         });
     },
 
-    handleDisplayErrors: function (component, errorParameters) {
+    handleDisplayErrors: function (component, parameters) {
         console.log('primary affiliation helper handleDisplayErrors');
-        console.log(JSON.stringify(errorParameters));
+        console.log(JSON.stringify(parameters));
 
         
         //Test 1 - Using a stored aura component
@@ -246,7 +246,11 @@
         primaryAffiliationModalBody.show();
         */
 
-        
+        var payload = {
+            validationErrors : parameters.errorParameters
+        };
+        // Publish LMS message with payload
+        component.find("validationErrors").publish(payload);
 
     }
 });

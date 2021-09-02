@@ -240,8 +240,10 @@ export default class affiliationSettings extends LightningElement {
             error: {
                 mappingName: mappingName,
                 elementId: "primaryAffiliationsAccountRecordType",
-                message: "There is an error with this field"
+                message: "Oooops! There is an error with this field"
             }
+
+            //primaryAffiliationsContactField
         };
 
         return validationResult;
@@ -283,7 +285,7 @@ export default class affiliationSettings extends LightningElement {
 
             const errorParams = {
                 modal: "primaryAffiliationsModal",
-                error: validationResult.error.elementId,
+                elementId: validationResult.error.elementId,
                 message: validationResult.error.message
             };
             this.displayErrors(errorParams);

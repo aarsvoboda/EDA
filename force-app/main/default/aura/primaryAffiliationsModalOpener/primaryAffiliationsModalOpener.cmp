@@ -7,8 +7,12 @@
     <aura:attribute name="overlayPromise" type="Aura.Action" />
     <aura:attribute name="primaryAffiliationModalFooterCmp" type="Aura.Component" />
     <aura:attribute name="primaryAffiliationModalBodyCmp" type="Aura.Component" />
-    
 
+    <!-- Including lightning:messageChannel makes it available to publish to from this component -->
+    <lightning:messageChannel
+        type="Validation_Errors__c"
+        aura:id="validationErrors"
+    />
 
 
     <aura:handler name="modalDataChangeEventHandler" event="c:modalDataChangeEvent" action="{!c.handleModalDataChangeEvent}" />

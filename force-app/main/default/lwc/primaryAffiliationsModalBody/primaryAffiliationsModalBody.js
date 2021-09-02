@@ -13,7 +13,17 @@ import stgTellMeMoreLink from "@salesforce/label/c.stgTellMeMoreLink";
 import stgAffiliationsDeleteModalBody from "@salesforce/label/c.stgAffiliationsDeleteModalBody";
 import stgAfflDeleteWithAutoEnrollment from "@salesforce/label/c.stgAfflDeleteWithAutoEnrollment";
 
+// Import message service features required for subscribing and the message channel
+import {
+    subscribe,
+    unsubscribe,
+    APPLICATION_SCOPE,
+    MessageContext
+} from 'lightning/messageService';
+import VALIDATION_ERRORS_CHANNEL from '@salesforce/messageChannel/Validation_Errors__c';
+
 export default class PrimaryAffiliationsModalBody extends LightningElement {
+    subscription = null;
     @api affiliationsAction;
     @api accountRecordType;
     @api contactField;
@@ -151,10 +161,52 @@ export default class PrimaryAffiliationsModalBody extends LightningElement {
         return autoEnrollmentDeleteWarningText.concat(deleteWarningText);
     }
 
+    // By using the MessageContext @wire adapter, unsubscribe will be called
+    // implicitly during the component descruction lifecycle.
+    @wire(MessageContext)
+    messageContext;
+
+    // Standard lifecycle hooks used to sub/unsub to message channel
+    connectedCallback() {
+        this.subscribeToMessageChannel();
+    }
+
+    disconnectedCallback() {
+        this.unsubscribeToMessageChannel();
+    }
+
+    // Encapsulate logic for LMS subscribe.
+    subscribeToMessageChannel() {
+        if (!this.subscription) {
+            this.subscription = subscribe(
+                this.messageContext,
+                VALIDATION_ERRORS_CHANNEL,
+                (message) => this.handleMessage(message),
+                { scope: APPLICATION_SCOPE }
+            );
+        }
+
+    }
+
+    unsubscribeToMessageChannel() {
+        unsubscribe(this.subscription);
+        this.subscription = null;
+    }
+
+    // Handler for message received by component
+    handleMessage(message) {
+        console.log('message received: ' + JSON.stringify(message));
+        let validationErrors = message.validationErrors;
+        this.validate(validationErrors);
+    }
+
     @api
     validate(errorParameters) {
         console.log('Body Received:' + JSON.stringify(errorParameters));
 
+        let comboElement = this.template.querySelector("[data-qa-locator='" + errorParameters.elementId + "']");
+        comboElement.setCustomValidity(errorParameters.message);
+        comboElement.reportValidity();
     }
 
     @api

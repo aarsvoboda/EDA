@@ -14,5 +14,12 @@
             fieldValue: fieldValue
         });
         modalDataChangeEvent.fire();
+    },
+
+    handleDisplayErrors: function (component, parameters) {
+        console.log('primaryAffiliationsModal  helper handleDisplayErrors');
+        console.log(JSON.stringify(parameters));
+
+        component.find("primaryAffiliationsModalBody").validate(parameters.errorParameters);
     }
 });

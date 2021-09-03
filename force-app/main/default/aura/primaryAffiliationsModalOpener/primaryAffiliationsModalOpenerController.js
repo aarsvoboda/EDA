@@ -9,11 +9,11 @@
         helper.handleModalFooterEvent(component,event);
     },
     closeModal: function (component, event, helper) {
-        console.log('primaryAffiliationsModal closemodal');
+        console.log('primaryAffiliationsModal opener closemodal');
         helper.handleCloseModal(component);
     },
     displayErrors: function (component, event, helper) {
-        console.log('primaryAffiliationsModal displayErrors');
+        console.log('primaryAffiliationsModal opener displayErrors');
         helper.handleDisplayErrors(component, event.getParam('arguments'));
     }
 });

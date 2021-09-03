@@ -208,17 +208,20 @@
         modalSaveEvent.fire();
     },
     handleCloseModal: function (component) {
-        console.log('primary affiliation helper close modal');
+        console.log('primary affiliation opener helper close modal');
         component.get("v.overlayPromise").then(function(overlay){
             overlay.close();
         });
     },
 
     handleDisplayErrors: function (component, parameters) {
-        console.log('primary affiliation helper handleDisplayErrors');
+        console.log('primary affiliation opener helper handleDisplayErrors');
         console.log(JSON.stringify(parameters));
 
-        
+        var payload = {
+            validationErrors : parameters.errorParameters
+        };
+
         //Test 1 - Using a stored aura component
         //It doesnt work
         let primaryAffiliationModalFooterCmp = component.get("v.primaryAffiliationModalFooterCmp");
@@ -232,12 +235,12 @@
         customModalFooter.show();
         */
 
-        /*
-        // Test 3 - Using a stored lwc component
-        // It doesn't work
+        
+        // Test 3 - Using a stored lwc component (I thought it was a lwc but it is aura duhh!)
+        // It works!
         let primaryAffiliationModalBodyCmp = component.get("v.primaryAffiliationModalBodyCmp");
-        primaryAffiliationModalBodyCmp.show();
-        */
+        primaryAffiliationModalBodyCmp.displayErrors(parameters.errorParameters);
+        
         
         /*
         // Test 4 - Using the lwc component id
@@ -246,9 +249,7 @@
         primaryAffiliationModalBody.show();
         */
 
-        var payload = {
-            validationErrors : parameters.errorParameters
-        };
+
         // Publish LMS message with payload
         component.find("validationErrors").publish(payload);
 

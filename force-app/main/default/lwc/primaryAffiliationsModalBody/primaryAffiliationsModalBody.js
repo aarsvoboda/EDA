@@ -197,7 +197,7 @@ export default class PrimaryAffiliationsModalBody extends LightningElement {
     handleMessage(message) {
         console.log('message received: ' + JSON.stringify(message));
         let validationErrors = message.validationErrors;
-        this.validate(validationErrors);
+        //this.validate(validationErrors);
     }
 
     @api

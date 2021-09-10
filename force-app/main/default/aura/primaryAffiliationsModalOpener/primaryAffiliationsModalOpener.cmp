@@ -7,6 +7,10 @@
     <aura:attribute name="overlayPromise" type="Aura.Action" />
     <aura:attribute name="primaryAffiliationModalFooterCmp" type="Aura.Component" />
     <aura:attribute name="primaryAffiliationModalBodyCmp" type="Aura.Component" />
+    <aura:attribute name="isValid" type="Boolean"/>
+    <aura:attribute name="isAccountRecordTypeValid" type="Boolean"/>
+    <aura:attribute name="isContactFieldValid" type="Boolean"/>
+
 
     <!-- Including lightning:messageChannel makes it available to publish to from this component -->
     <lightning:messageChannel

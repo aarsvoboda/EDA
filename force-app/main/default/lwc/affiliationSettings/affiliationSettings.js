@@ -233,65 +233,26 @@ export default class affiliationSettings extends LightningElement {
             });
         this.refreshAllApex();
     }
-
-    handleValidation(mappingName, accountRecordType, contactField) {
-        let validationResult = {
-            success: false,
-            error: {
-                mappingName: mappingName,
-                elementId: "primaryAffiliationsAccountRecordType",
-                message: "Oooops! There is an error with this field"
-            }
-
-            //primaryAffiliationsContactField
-        };
-
-        return validationResult;
-    }
     
     updateAffiliation(mappingName, accountRecordType, contactField) {
-        console.log('updateAffiliation');
-        let validationResult = this.handleValidation(mappingName, accountRecordType, contactField);
-
-        if (validationResult.success === true) {
-            console.log('success');
-            updateAffiliationMappings({
-                mappingName: mappingName,
-                accRecordType: accountRecordType,
-                conPrimaryAfflField: contactField,
+        updateAffiliationMappings({
+            mappingName: mappingName,
+            accRecordType: accountRecordType,
+            conPrimaryAfflField: contactField,
+        })
+            .then((result) => {
+                this.showToast(
+                    "success",
+                    this.labelReference.successToast,
+                    this.labelReference.editSuccessMessage.replace("{0}", result)
+                );
             })
-                .then((result) => {
-                    this.showToast(
-                        "success",
-                        this.labelReference.successToast,
-                        this.labelReference.editSuccessMessage.replace("{0}", result)
-                    );
-                    this.closeModal();
-                })
 
-                .catch((error) => {
-                    // console.log('Inside error');
-                });
-            this.refreshAllApex();
-        }
-
-        if (validationResult.success === false) {
-            console.log('error');
-            this.showToast(
-                "error",
-                this.labelReference.errorToast,
-                this.labelReference.saveErrorMessage.replace("{0}", validationResult.error.mappingName)
-            );
-
-            const errorParams = {
-                modal: "primaryAffiliationsModal",
-                elementId: validationResult.error.elementId,
-                message: validationResult.error.message
-            };
-            this.displayErrors(errorParams);
-        }
-
-
+            .catch((error) => {
+                // console.log('Inside error');
+            });
+        this.refreshAllApex();
+        
     }
 
     displayErrors(errorParams) {

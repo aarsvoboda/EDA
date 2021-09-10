@@ -7,12 +7,30 @@
 
         try {
             customModalFooterEvent.fire();
+            /*
             if (buttonClicked === "cancel"){
                 component.find("edaOverlayLibrary").notifyClose();
             }
+            */
+            component.find("edaOverlayLibrary").notifyClose();
         } catch (e) {
             //save for validation handling
             //console.error(e);
+            console.log(e.message);
+            var message = e.message.substring(
+                e.message.indexOf("[") + 1, 
+                e.message.lastIndexOf("]")
+            );
+
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                type: "error",
+                mode: 'sticky',
+                "title": "Error",
+                "message": message
+            });
+            toastEvent.fire();
+
         }
     },
     handleToggleSaveButtonVisibility: function (component, sourceName, disableSaveButton) {

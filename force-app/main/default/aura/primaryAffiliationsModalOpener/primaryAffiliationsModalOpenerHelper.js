@@ -12,6 +12,11 @@
         component.set("v.contactField", contactField);
         component.set("v.autoProgramEnrollment", autoProgramEnrollment);
 
+        //Set the valid flags true by default
+        component.set("v.isValid", true);
+        component.set("v.isAccountRecordTypeValid", true);
+        component.set("v.isContactFieldValid", true);
+
         let modalBody;
         let modalFooter;
 
@@ -110,14 +115,27 @@
         event.stopPropagation();
         const field = event.getParam("field");
         const fieldValue = event.getParam("fieldValue");
+        const isValid = event.getParam("isValid");
+
         switch (field) {
             case "accountRecordType":
                 component.set("v.accountRecordType", fieldValue);
+                component.set("v.isAccountRecordTypeValid", isValid);
                 break;
             case "contactField":
                 component.set("v.contactField", fieldValue);
+                component.set("v.isContactFieldValid", isValid);
                 break;
         }
+        component.set("v.isValid", this.checkAllFieldsValid(component));
+    },
+    checkAllFieldsValid: function (component) {
+        let isAccountRecordTypeValid = component.get("v.isAccountRecordTypeValid");
+        let isContactFieldValid = component.get("v.isContactFieldValid");
+        if (isAccountRecordTypeValid && isContactFieldValid) {
+            return true;
+        }
+        return false;
     },
     handleModalFooterEvent: function (component, event) {
         event.stopPropagation();
@@ -128,16 +146,23 @@
         }
     },
     handleModalFooterConfirm: function (component) {
-        switch (component.get("v.affiliationsAction")) {
-            case "create":
-                this.handleModalCreateConfirm(component);
-                break;
-            case "edit":
-                this.handleModalEditConfirm(component);
-                break;
-            case "delete":
-                this.handleModalDeleteConfirm(component);
-                break;
+        let isValid = component.get("v.isValid");
+
+        if (isValid === true) {
+            switch (component.get("v.affiliationsAction")) {
+                case "create":
+                    this.handleModalCreateConfirm(component);
+                    break;
+                case "edit":
+                    this.handleModalEditConfirm(component);
+                    break;
+                case "delete":
+                    this.handleModalDeleteConfirm(component);
+                    break;
+            }
+        }
+        if (!isValid || isValid === false) {
+            throw new Error('There are some errors which should be fixed before proceeding'); 
         }
     },
 
@@ -249,9 +274,7 @@
         primaryAffiliationModalBody.show();
         */
 
-
-        // Publish LMS message with payload
-        component.find("validationErrors").publish(payload);
-
     }
+                           
+
 });

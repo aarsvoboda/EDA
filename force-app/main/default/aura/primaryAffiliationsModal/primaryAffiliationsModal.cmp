@@ -5,6 +5,7 @@
     <aura:attribute name="accountRecordType" type="String" />
     <aura:attribute name="contactField" type="String" />
     <aura:attribute name="autoProgramEnrollment" type="Boolean" />
+    <aura:attribute name="isValid" type="Boolean"/>
 
     <c:primaryAffiliationsModalBody
         aura:id = "primaryAffiliationsModalBody"

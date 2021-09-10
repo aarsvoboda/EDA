@@ -11,14 +11,6 @@
     <aura:attribute name="isAccountRecordTypeValid" type="Boolean"/>
     <aura:attribute name="isContactFieldValid" type="Boolean"/>
 
-
-    <!-- Including lightning:messageChannel makes it available to publish to from this component -->
-    <lightning:messageChannel
-        type="Validation_Errors__c"
-        aura:id="validationErrors"
-    />
-
-
     <aura:handler name="modalDataChangeEventHandler" event="c:modalDataChangeEvent" action="{!c.handleModalDataChangeEvent}" />
     <aura:handler name="modalFooterEventHandler" event="c:customModalFooterEvent" action="{!c.handleModalFooterEvent}" />
     <aura:registerEvent name="modalSaveEvent" type="c:modalSaveEvent" />

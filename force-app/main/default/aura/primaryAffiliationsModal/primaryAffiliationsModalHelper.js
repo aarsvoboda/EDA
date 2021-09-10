@@ -24,10 +24,5 @@
         console.log(JSON.stringify(parameters));
 
         component.find("primaryAffiliationsModalBody").validate(parameters.errorParameters);
-    },
-    handleInitValidation: function (component) {
-        console.log('handleInitValidation  helper');
-
-        component.find("primaryAffiliationsModalBody").handleInitValidation();
     }
 });

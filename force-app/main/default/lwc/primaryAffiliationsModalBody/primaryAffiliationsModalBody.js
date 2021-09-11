@@ -14,6 +14,8 @@ import stgAffiliationsDeleteModalBody from "@salesforce/label/c.stgAffiliationsD
 import stgAfflDeleteWithAutoEnrollment from "@salesforce/label/c.stgAfflDeleteWithAutoEnrollment";
 
 export default class PrimaryAffiliationsModalBody extends LightningElement {
+    isAccountRecordTypeInitDone = false;
+    isContactFieldInitDone = false;
 
     @api affiliationsAction;
     @api accountRecordType;
@@ -96,18 +98,31 @@ export default class PrimaryAffiliationsModalBody extends LightningElement {
         console.log('handleInitValidation lwc');
 
         //AccountRecordType
-        let accountRecordTypeValue = this.template.querySelector("[data-qa-locator='" + this.inputAttributeReference.accountRecordType + "']").value;
-        let isAccountRecordTypeValid = this.handleValidation("accountRecordType");
-        this.dispatchAccountRecordTypeChangeEvent(accountRecordTypeValue, isAccountRecordTypeValid);
+        let accountRecordTypeElement = this.template.querySelector("[data-qa-locator='" + this.inputAttributeReference.accountRecordType + "']");
 
-        console.log('accountRecordTypeValue: ' + accountRecordTypeValue);
+        if (accountRecordTypeElement && this.isAccountRecordTypeInitDone == false) {
+            let accountRecordTypeValue = accountRecordTypeElement.value;
+            let isAccountRecordTypeValid = this.handleValidation("accountRecordType");
+            this.dispatchAccountRecordTypeChangeEvent(accountRecordTypeValue, isAccountRecordTypeValid);
 
+            console.log('accountRecordTypeValue: ' + accountRecordTypeValue);
+            console.log('isAccountRecordTypeValid: ' + isAccountRecordTypeValid);
+            this.isAccountRecordTypeInitDone = true;
+        }
         //ContactField
-        let contactFieldValue = this.template.querySelector("[data-qa-locator='" + this.inputAttributeReference.contactField + "']").value;
-        let isContactFieldValid = this.handleValidation("contactField");
-        this.dispatchContactFieldChangeEvent(contactFieldValue, isContactFieldValid);
+        let contactFieldElement = this.template.querySelector("[data-qa-locator='" + this.inputAttributeReference.contactField + "']");
+        if (contactFieldElement && this.isContactFieldInitDone == false) {
+            
+            let contactFieldValue = contactFieldElement.value;
+            let isContactFieldValid = this.handleValidation("contactField");
+            this.dispatchContactFieldChangeEvent(contactFieldValue, isContactFieldValid);
 
-        console.log('contactFieldValue: ' + contactFieldValue);
+            console.log('contactFieldValue: ' + contactFieldValue);
+            console.log('isContactFieldValid: ' + isContactFieldValid);
+
+            this.isContactFieldInitDone = true;
+
+        }
 
     }
 
@@ -178,8 +193,14 @@ export default class PrimaryAffiliationsModalBody extends LightningElement {
 
 
     // Standard lifecycle hooks used to sub/unsub to message channel
-    connectedCallback() {
-        //this.handleInitValidation();
+    renderedCallback() {
+        console.log('rendered called');
+        if (this.affiliationsAction === 'edit') {
+            if (this.isAccountRecordTypeInitDone === false || 
+                this.isContactFieldInitDone === false) {
+                this.handleInitValidation();
+            }
+        }
     }
 
 
